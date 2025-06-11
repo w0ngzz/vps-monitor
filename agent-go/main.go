@@ -3,7 +3,9 @@ package main
 import (
     "bytes"
     "encoding/json"
+    "io"
     "io/ioutil"
+    "log"
     "net/http"
     "os"
     "time"
@@ -21,7 +23,19 @@ type Config struct {
     Server string `json:"server"`
 }
 
+var logger *log.Logger
+
+func initLogger() {
+    logFile, err := os.OpenFile("agent.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+    if err != nil {
+        log.Fatalf("Failed to open log file: %v", err)
+    }
+    multi := io.MultiWriter(os.Stdout, logFile)
+    logger = log.New(multi, "", log.LstdFlags)
+}
+
 func main() {
+    initLogger()
     config := loadConfig()
     for {
         cpuPercents, _ := cpu.Percent(0, false)
@@ -42,7 +56,15 @@ func main() {
         }
 
         jsonData, _ := json.Marshal(data)
-        http.Post(config.Server, "application/json", bytes.NewBuffer(jsonData))
+        resp, err := http.Post(config.Server, "application/json", bytes.NewBuffer(jsonData))
+
+        if err != nil {
+            logger.Printf("[ERROR] Failed to POST to %s: %v\n", config.Server, err)
+        } else {
+            defer resp.Body.Close()
+            logger.Printf("[INFO] Sent data to %s - Status: %s\n", config.Server, resp.Status)
+        }
+
         time.Sleep(60 * time.Second)
     }
 }
