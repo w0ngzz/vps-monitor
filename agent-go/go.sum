@@ -1,0 +1,6 @@
+github.com/shirou/gopsutil/v3 v3.24.0 h1:TVrZLa0TwnQYUbStb9Jt6HiUvL+pT0bWQONqQuhPR6Y=
+github.com/shirou/gopsutil/v3 v3.24.0/go.mod h1:4cXrAQp/uvX4yRaqfM7s2RrSyFwhg2AhMSijbxyqwbM=
+github.com/tklauser/go-sysconf v0.3.11 h1:LuOlcmhLo+ECxN+yXlWx0nsAbwAFooUzJG9M2m8oN9Y=
+github.com/tklauser/go-sysconf v0.3.11/go.mod h1:mEj8ZCHN8KxO6iULVpbKWrHNWJgMwvD49Dq5dD9w8cY=
+golang.org/x/sys v0.18.0 h1:9+vm0JQ8PKvVoStKiQoxlK/05KwNhqgcM6T8dLb6JXg=
+golang.org/x/sys v0.18.0/go.mod h1:Znpv9sBHGkJmNyCyX/1ivzYZi1kBssdc99u2FVaIFfA=
