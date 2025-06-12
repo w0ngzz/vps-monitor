@@ -18,9 +18,10 @@ import (
 )
 
 type Config struct {
-    HostID string `json:"host_id"`
-    Token  string `json:"token"`
-    Server string `json:"server"`
+    HostID   string `json:"host_id"`
+    Token    string `json:"token"`
+    Server   string `json:"server"`
+    Interval int    `json:"interval"` // 上报间隔（秒）
 }
 
 var logger *log.Logger
@@ -53,6 +54,7 @@ func main() {
             "net_in":  netIO[0].BytesRecv,
             "net_out": netIO[0].BytesSent,
             "uptime":  uptime,
+            "timestamp": time.Now().Unix(),
         }
 
         jsonData, _ := json.Marshal(data)
@@ -65,7 +67,7 @@ func main() {
             logger.Printf("[INFO] Sent data to %s - Status: %s\n", config.Server, resp.Status)
         }
 
-        time.Sleep(60 * time.Second)
+        time.Sleep(time.Duration(config.Interval) * time.Second)
     }
 }
 
@@ -75,5 +77,8 @@ func loadConfig() Config {
     bytes, _ := ioutil.ReadAll(file)
     var config Config
     json.Unmarshal(bytes, &config)
+    if config.Interval == 0 {
+        config.Interval = 60
+    }
     return config
 }

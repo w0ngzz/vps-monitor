@@ -1,5 +1,6 @@
 {
   "host_id": "vps-001",
   "token": "testtoken123",
-  "server": "http://localhost:8000/report"
+  "server": "http://localhost:8000/report",
+  "interval": 60
 }
